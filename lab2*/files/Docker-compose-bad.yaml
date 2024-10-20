@@ -1,0 +1,16 @@
+services:
+  server:
+    build: server/
+    command: python ./server.py
+    ports:
+      - "1234:1234"
+    environment:
+      - DEBUG=true
+  client:
+    build: client/
+    command: python ./client.py
+    network_mode: host
+    environment:
+      - DEBUG=true
+    restart: always
+
