@@ -8,11 +8,26 @@
 
 > Написать “плохой” Dockerfile, в котором есть не менее трех “bad practices”
 
-![Плохой Dockerfile](./files/docker_bad.png)
+```dockerfile
+FROM python:latest
+ADD .. /app
+WORKDIR /app
+CMD ["python", "app.py"]
+```
+> Сборка и запуск
+![Плохой Dockerfile](./files/2.png)
 
-> Написать “хороший” Dockerfile, в котором эти плохие практики исправлены 
-
-![Плохой Dockerfile](./files/docker_good.png)
+> Написать “хороший” Dockerfile, в котором эти плохие практики исправлены
+```dockerfile
+FROM python:3.9
+COPY .. /app
+WORKDIR /app
+RUN adduser --disabled-password newuser
+USER newuser
+CMD ["python", "app.py"]
+```
+> Сборка и запуск
+![Плохой Dockerfile](./files/1.png)
 
 > В Readme описать каждую из плохих практик в плохом докерфайле, почему она плохая и как в хорошем она была исправлена, как исправление повлияло на результат
 

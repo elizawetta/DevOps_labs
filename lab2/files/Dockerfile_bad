@@ -1,7 +1,4 @@
 FROM python:latest
 ADD .. /app
+WORKDIR /app
 CMD ["python", "app.py"]
-
-
-
-
