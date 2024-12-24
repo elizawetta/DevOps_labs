@@ -21,8 +21,7 @@ jobs:
         with:
           python-version: '3.9'
       - run: pip install pytest
-      - run: pytest testing/
-      - run: ...
+      - run: python -m pytest
 ```
 
 > Исправленная версия
@@ -32,18 +31,30 @@ name: Good Practices
 on:
   push:
     branches:
-      - master
+      - main
       - dev
   pull_request:
     branches:
-      - master
-#      - ...
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-      - name: check code
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+      - name: install deps
+        run: pip install pytest
+
+  test:
+    runs-on: ubuntu-22.04
+    needs: build
+    steps:
+      - name: checkout code
         uses: actions/checkout@v3
       - name: set up python
         uses: actions/setup-python@v3
@@ -51,20 +62,17 @@ jobs:
           python-version: '3.9'
       - name: install deps
         run: pip install pytest
-  test:
-    runs-on: ubuntu-22.04
-    needs:
-      - build
-    steps:
-      - name: run tests
-        run: pytest testing/
+      - name: Run tests
+        run: python -m pytest
+
   deploy:
     runs-on: ubuntu-22.04
-    needs:
+    needs: 
       - build
       - test
-    steps: deploy
-#    ...
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 ```
 ### Ошибка 1 - запускать без разделения на ветки 
 ```yaml
@@ -141,3 +149,9 @@ jobs:
   deploy:
     ...
 ```
+
+Здесь можно посмотреть, что "плохой" и "хороший" файлы отработали корректно.
+https://github.com/elizawetta/CI_CD_lab/actions
+![](files/bad_cicd.png)
+![](files/good_cicd.png)
+
